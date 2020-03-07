@@ -12,8 +12,13 @@ export default class App extends Component {
     this.setState({
       table: [
         ...this.state.table,
-        { player: this.state.player, score: this.state.score }
-      ]
+        {
+          player: this.state.player,
+          score: this.state.score
+        }
+      ],
+      player: "",
+      score: ""
     });
   };
 
@@ -30,6 +35,7 @@ export default class App extends Component {
   };
 
   get renderTable() {
+    let newTable = this.state.table.sort((a, b) => b.score - a.score);
     return (
       <table>
         <tr>
@@ -37,12 +43,18 @@ export default class App extends Component {
           <th>Name</th>
           <th>Score</th>
         </tr>
+        {newTable.map((item, index) => (
+          <tr>
+            <td key={index}>{index + 1}</td>
+            <td key={index}>{item.player}</td>
+            <td key={index}>{item.score}</td>
+          </tr>
+        ))}
       </table>
     );
   }
 
   render() {
-    console.log(this.state.table);
     return (
       <div className="App">
         <h1>Leaderboard</h1>
@@ -57,6 +69,7 @@ export default class App extends Component {
           placeholder={"score"}
           onChange={this.handleScore}
           value={this.state.score}
+          type="number"
         />
         <button onClick={this.handleClick}>submit</button>
         {this.renderTable}
